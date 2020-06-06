@@ -6,6 +6,13 @@ const User = require('../../models/user/User.model');
 
 process.env.SECRET_KEY = 'secret';
 
+router.get('/', (req, res) => {
+	User.find((err, docs) => {
+		if(!err) res.send(docs);
+		else res.status(400).send(err);
+	})
+});
+
 router.post('/register', (req, res) => {
 
 	const userData = new User(req.body);
@@ -40,19 +47,17 @@ router.post('/login', (req, res) => {
 			if(user){
 				if(bcrypt.compareSync(req.body.password, user.password)){
 					const payload = req.body;
-					let token = jwt.sign(payload, process.env.SECRET_KEY, {
-						expiresIn: 1440
-					});
-					res.send(token);
+					let token = jwt.sign(payload, process.env.SECRET_KEY);
+					return res.json(token);
 				}else{
-					res.status(400).send('User does not exist');
+					return res.status(400).send('User does not exist');
 				}
 			}else{
-				res.status(400).send('User does not exist');
+				return res.status(400).json('User does not exist');
 			}
 		})
 		.catch(err => {
-			res.status(400).send(err);
+			return res.status(400).send(err);
 		})
 })
 

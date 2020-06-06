@@ -17,7 +17,7 @@
 							</div>
 							
 							<!-- Register Form -->
-							<form [formGroup]="registerForm" (submit)="register()">
+							<form [formGroup]="registerForm" (ngSubmit)="register()">
 								<div class="form-group form-focus">
 									<input type="text" formControlName="fullName" class="form-control floating">
 									<label class="focus-label">FullName</label>
@@ -39,7 +39,7 @@
 										Already have an account?
 									</a>
 								</div>
-								<button class="btn btn-primary btn-block btn-lg login-btn" type="submit">Signup</button>
+								<button type="submit" class="btn btn-primary btn-block btn-lg login-btn" >Signup</button>
 								<div class="login-or">
 									<span class="or-line"></span>
 									<span class="span-or">or</span>

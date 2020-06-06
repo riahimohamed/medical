@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
@@ -14,22 +14,27 @@ export class LoginComponent implements OnInit {
   
   user: User;
 
-  loginForm = new FormGroup({
-    email: new FormControl(),
-    password: new FormControl()
-  });
+  loginForm: FormGroup;
 
-  constructor(private auth:AuthService, private router: Router, private fb: FormBuilder) { }
+  constructor(private auth:AuthService, private router: Router) {
+
+    this.loginForm = new FormGroup({
+      email: new FormControl('riahi@gmail.com'),
+      password: new FormControl('0000')
+    });
+  }
 
   ngOnInit(): void {
   }
 
-  login(){
-  	this.auth.login(this.user).subscribe(() => {
-  		this.router.navigateByUrl('/profile');
+  onSubmit(){
+  	this.auth.login(this.loginForm.value).subscribe(res => {
+      //console.log(res);
+  		this.router.navigate(['/profile']);
   	},
   	err => {
   		console.error(err);
+      //this.router.navigate(['/profile']);
   	})
   }
 

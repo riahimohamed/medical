@@ -23,16 +23,14 @@ export class AuthService {
   	this.token = token;
   }
 
-  getToken(): string{
-  	if(!this.token){
-  		this.token = localStorage.getItem('userToken')
-  	}
-  	return this.token;
+  getToken(){
+  		return this.token = localStorage.getItem('userToken');
   }
 
   getUserDetails(): User{
   	const token = this.getToken();
   	let payload;
+
   	if(token){
   		payload = token.split('.')[1];
   		payload = window.atob(payload);
@@ -44,9 +42,9 @@ export class AuthService {
 
   isLoggedIn(): boolean{
   	const user = this.getUserDetails();
-
+    //console.log(user);
   	if(user){
-  		return user.exp > Date.now() /1000;
+  		return true;
   	}else{
   		return false;
   	}
@@ -68,12 +66,14 @@ export class AuthService {
   }
 
   login(user: User): Observable<any>{
+    //return this.http.post(this.BASE_URL + '/login', user);
   	const base = this.http.post(this.BASE_URL + '/login', user);
 
   	const request = base.pipe(
 	  		map((data: TokenReponse) => {
-	  			if(data.token){
-	  				this.saveToken(data.token);
+          
+	  			if(data){
+	  				this.saveToken(data);
 	  			}
 	  			return data;
 	  		})
